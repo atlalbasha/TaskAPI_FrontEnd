@@ -6,6 +6,8 @@ import {
   useFonts,
   FredokaOne_400Regular,
 } from "@expo-google-fonts/fredoka-one";
+import { JosefinSans_400Regular } from "@expo-google-fonts/josefin-sans";
+import { Nunito_400Regular } from "@expo-google-fonts/nunito";
 
 const LoginScreen = ({ navigation }) => {
   const [token, setToken] = useState("");
@@ -15,6 +17,8 @@ const LoginScreen = ({ navigation }) => {
   //CUSTOM FONTS
   let [fontsLoaded] = useFonts({
     FredokaOne_400Regular,
+    JosefinSans_400Regular,
+    Nunito_400Regular,
   });
 
   function loginFetch() {
@@ -47,7 +51,9 @@ const LoginScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>todoMore</Text>
+      <Text style={styles.header}>
+        todo<Text style={{ color: "#0496FF" }}>More</Text>
+      </Text>
       <Text style={styles.subtitle}>Login to continue</Text>
       <View style={styles.signInView}>
         <CustomInput
@@ -74,7 +80,7 @@ const LoginScreen = ({ navigation }) => {
             //{loginFetch}
           }}
         />
-        <Text style={{ color: "#fff" }}>
+        <Text style={styles.text}>
           Don't have an account?{" "}
           <Text
             onPress={() => {
@@ -86,9 +92,9 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         </Text>
       </View>
-
+      <View style={styles.spacer}></View>
       <Text
-        style={{ color: "#fff", marginTop: 8 }}
+        style={styles.text}
         onPress={() => {
           console.log("forgot password!");
         }}
@@ -110,6 +116,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signInView: {
+    width: 400,
     borderColor: "#3b4053",
     borderRadius: 8,
     borderWidth: 1,
@@ -124,7 +131,13 @@ const styles = StyleSheet.create({
     color: "white",
   },
   subtitle: {
+    fontFamily: "JosefinSans_400Regular",
     marginBottom: 32,
+    fontSize: 14,
+    color: "white",
+  },
+  text: {
+    fontFamily: "Nunito_400Regular",
     fontSize: 14,
     color: "white",
   },

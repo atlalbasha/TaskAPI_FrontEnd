@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Button,
   SafeAreaView,
-  FlatList
-} from 'react-native'
+  FlatList,
+} from "react-native";
 
 const HomeScreen = ({ route, navigation }) => {
-  const { userId, token } = route.params
-  const [todos, setTodos] = useState([])
+  const { userId, token } = route.params;
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    sendToken()
-  })
+    sendToken();
+  });
 
   function sendToken() {
-    fetch('https://localhost:7162/User/' + userId + '/todos', {
-      method: 'GET',
+    fetch("https://localhost:7162/User/" + userId + "/todos", {
+      method: "GET",
       headers: {
-        Accept: 'text/plain',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => response.json())
       .then((json) => {
-        setTodos(json)
+        setTodos(json);
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   return (
@@ -44,9 +44,9 @@ const HomeScreen = ({ route, navigation }) => {
       />
       <Button onPress={sendToken} />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

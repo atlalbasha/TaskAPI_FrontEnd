@@ -2,7 +2,14 @@ import React from "react";
 
 import { StyleSheet, Text, View, Pressable } from "react-native";
 
+import { useFonts, Nunito_400Regular } from "@expo-google-fonts/nunito";
+
 const ButtonStyle = ({ title, isActive, onPress }) => {
+  //CUSTOM FONTS
+  let [fontsLoaded] = useFonts({
+    Nunito_400Regular,
+  });
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -41,6 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3B4053",
   },
   buttonText: {
+    fontFamily: "Nunito_400Regular",
     color: "white",
   },
   buttonTextDisabled: {
