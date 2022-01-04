@@ -1,119 +1,128 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, SafeAreaView, FlatList, Text } from "react-native";
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
+import CustomCard from "../components/CustomCard";
 import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  SafeAreaView,
-  FlatList
-} from 'react-native'
-import CustomInput from '../components/CustomInput'
-import CustomButton from '../components/CustomButton'
-import CustomCard from '../components/CustomCard'
+  useFonts,
+  JosefinSans_400Regular,
+} from "@expo-google-fonts/josefin-sans";
 
-const HomeScreen = ({ route, navigation }) => {
-  const { userId, token } = route.params
-  const [todos, setTodos] = useState([])
-  const [newTodo, setNewTodo] = useState('')
+const HomeScreen = ({ route }) => {
+  const { userId, token } = route.params;
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState("");
+
+  //CUSTOM FONTS
+  let [fontsLoaded] = useFonts({
+    //FredokaOne_400Regular,
+    JosefinSans_400Regular,
+    //Nunito_400Regular
+  });
 
   useEffect(() => {
-    sendToken()
-  }, [])
+    sendToken();
+  }, []);
 
   function onTouch(id, isCompleted, title) {
-    console.log(id)
-    console.log(isCompleted)
-    fetch('https://localhost:7162/Todo/' + id, {
-      method: 'PUT',
+    console.log(id);
+    console.log(isCompleted);
+    fetch("https://localhost:7162/Todo/" + id, {
+      method: "PUT",
       headers: {
-        Accept: '*/*',
-        'Content-Type': 'application/json'
+        Accept: "*/*",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         title: title,
-        isCompleted: !isCompleted
-      })
+        isCompleted: !isCompleted,
+      }),
     })
       .then((response) => response.text())
       .then((json) => {
-        console.log(json)
-        sendToken()
+        console.log(json);
+        sendToken();
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   function postTodo() {
-    fetch('https://localhost:7162/Todo/' + userId, {
-      method: 'POST',
+    fetch("https://localhost:7162/Todo/" + userId, {
+      method: "POST",
       headers: {
-        Accept: 'text/plain',
-        'Content-Type': 'application/json'
+        Accept: "text/plain",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         title: newTodo,
-        isCompleted: false
-      })
+        isCompleted: false,
+      }),
     })
       .then((response) => response.text())
       .then((json) => {
-        console.log(json)
-        setNewTodo('')
-        sendToken()
+        console.log(json);
+        setNewTodo("");
+        sendToken();
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   function sendToken() {
-    fetch('https://localhost:7162/User/' + userId + '/todos', {
-      method: 'GET',
+    fetch("https://localhost:7162/User/" + userId + "/todos", {
+      method: "GET",
       headers: {
-        Accept: 'text/plain',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => response.json())
       .then((json) => {
-        setTodos(json)
+        setTodos(json);
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   function deleteTodo(id) {
-    console.log(id)
+    console.log(id);
 
-    fetch('https://localhost:7162/Todo/' + id, {
-      method: 'DELETE',
+    fetch("https://localhost:7162/Todo/" + id, {
+      method: "DELETE",
       headers: {
-        Accept: '*/*'
-      }
+        Accept: "*/*",
+      },
     })
       .then((response) => response.text())
       .then((json) => {
-        console.log(json)
-        sendToken()
+        console.log(json);
+        sendToken();
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   return (
-    <SafeAreaView>
-      <View style={styles.headers}>
-        <CustomInput
-          onChangeText={setNewTodo}
-          value={newTodo}
-          placeholder={'Add new todo more'}
-          isPassword={false}
-        />
-        <CustomButton title="Add Task" onPress={postTodo} isActive={true} />
+    <View style={styles.container}>
+      <Text style={styles.subtitle}>My todos</Text>
+      <View style={styles.todoInput}>
+        <View style={{ flex: 4, marginEnd: 8 }}>
+          <CustomInput
+            onChangeText={setNewTodo}
+            value={newTodo}
+            placeholder={"New Todo"}
+            isPassword={false}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <CustomButton title="Add" onPress={postTodo} isActive={true} />
+        </View>
       </View>
 
       <FlatList
@@ -129,14 +138,28 @@ const HomeScreen = ({ route, navigation }) => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </SafeAreaView>
-  )
-}
+    </View>
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-  headers: {
-    flexDirection: 'row'
-  }
-})
+  container: {
+    flex: 1,
+    backgroundColor: "#252b41",
+    padding: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  subtitle: {
+    fontFamily: "JosefinSans_400Regular",
+    marginBottom: 32,
+    fontSize: 18,
+    color: "white",
+  },
+  todoInput: {
+    width: 400,
+    flexDirection: "row",
+  },
+});
