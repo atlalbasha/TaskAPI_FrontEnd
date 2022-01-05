@@ -45,26 +45,32 @@ const HomeScreen = ({ route, navigation }) => {
   }
 
   function postTodo() {
-    fetch('https://localhost:7162/Todo/' + userId, {
-      method: 'POST',
-      headers: {
-        Accept: 'text/plain',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: newTodo,
-        isCompleted: false
+    if (newTodo !== '') {
+      fetch('https://localhost:7162/Todo/' + userId, {
+        method: 'POST',
+        headers: {
+          Accept: 'text/plain',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: newTodo,
+          isCompleted: false
+        })
       })
-    })
-      .then((response) => response.text())
-      .then((json) => {
-        console.log(json)
-        setNewTodo('')
-        sendToken()
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+        .then((response) => response.text())
+        .then((json) => {
+          console.log(json)
+
+          setNewTodo('')
+          sendToken()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else {
+      // }
+      alert('Please enter a todo')
+    }
   }
 
   function sendToken() {
