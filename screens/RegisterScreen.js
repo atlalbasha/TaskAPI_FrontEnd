@@ -53,21 +53,21 @@ const RegisterScreen = ({ navigation }) => {
       <View style={styles.signInView}>
         <CustomInput
           onChangeText={setUsername}
-          value={username}
+          value={username.trim()}
           placeholder={'Username'}
           isPassword={false}
         />
 
         <CustomInput
           onChangeText={setPassword}
-          value={password}
+          value={password.trim()}
           placeholder={'Password'}
           isPassword={true}
         />
 
         <CustomInput
           onChangeText={setConfirmPassword}
-          value={confirmPassword}
+          value={confirmPassword.trim()}
           placeholder={'Confirm Password'}
           isPassword={true}
         />

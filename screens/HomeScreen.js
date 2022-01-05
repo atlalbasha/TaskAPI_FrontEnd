@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  SafeAreaView,
-  FlatList
-} from 'react-native'
+import { StyleSheet, View, SafeAreaView, FlatList, Text } from 'react-native'
 import CustomInput from '../components/CustomInput'
 import CustomButton from '../components/CustomButton'
 import CustomCard from '../components/CustomCard'
+import {
+  useFonts,
+  JosefinSans_400Regular
+} from '@expo-google-fonts/josefin-sans'
 
-const HomeScreen = ({ route, navigation }) => {
+const HomeScreen = ({ route }) => {
   const { userId, token } = route.params
   const [todos, setTodos] = useState([])
   const [newTodo, setNewTodo] = useState('')
+  const [pleaseEnterTodo, setPleaseEnterTodo] = useState('New Todo')
+
+  //CUSTOM FONTS
+  let [fontsLoaded] = useFonts({
+    //FredokaOne_400Regular,
+    JosefinSans_400Regular
+    //Nunito_400Regular
+  })
 
   useEffect(() => {
     sendToken()
@@ -68,8 +73,7 @@ const HomeScreen = ({ route, navigation }) => {
           console.error(error)
         })
     } else {
-      // }
-      alert('Please enter a todo')
+      setPleaseEnterTodo('Please enter a Todo')
     }
   }
 
@@ -111,15 +115,20 @@ const HomeScreen = ({ route, navigation }) => {
   }
 
   return (
-    <SafeAreaView>
-      <View style={styles.headers}>
-        <CustomInput
-          onChangeText={setNewTodo}
-          value={newTodo}
-          placeholder={'Add new todo more'}
-          isPassword={false}
-        />
-        <CustomButton title="Add Task" onPress={postTodo} isActive={true} />
+    <View style={styles.container}>
+      <Text style={styles.subtitle}>My todos</Text>
+      <View style={styles.todoInput}>
+        <View style={{ flex: 4, marginEnd: 8 }}>
+          <CustomInput
+            onChangeText={setNewTodo}
+            value={newTodo}
+            placeholder={pleaseEnterTodo}
+            isPassword={false}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <CustomButton title="Add" onPress={postTodo} isActive={true} />
+        </View>
       </View>
 
       <FlatList
@@ -135,14 +144,28 @@ const HomeScreen = ({ route, navigation }) => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </SafeAreaView>
+    </View>
   )
 }
 
 export default HomeScreen
 
 const styles = StyleSheet.create({
-  headers: {
+  container: {
+    flex: 1,
+    backgroundColor: '#252b41',
+    padding: 16,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  subtitle: {
+    fontFamily: 'JosefinSans_400Regular',
+    marginBottom: 32,
+    fontSize: 18,
+    color: 'white'
+  },
+  todoInput: {
+    width: 400,
     flexDirection: 'row'
   }
 })

@@ -20,7 +20,7 @@ export default CustomInput;
 
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    height: 42,
     backgroundColor: "#3b4053",
     paddingVertical: 10,
     paddingHorizontal: 15,

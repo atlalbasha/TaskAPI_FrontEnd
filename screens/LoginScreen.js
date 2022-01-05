@@ -10,6 +10,7 @@ const LoginScreen = ({ navigation }) => {
   const [token, setToken] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [showError, setShowError] = useState(false)
 
   //CUSTOM FONTS
   let [fontsLoaded] = useFonts({
@@ -37,7 +38,15 @@ const LoginScreen = ({ navigation }) => {
         ]
       })
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status == 200) {
+          setShowError(false)
+        } else {
+          setShowError(true)
+        }
+
+        return response.json()
+      })
       .then((json) => {
         setToken(json)
         navigation.push('Home', json)
@@ -55,17 +64,20 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.signInView}>
         <CustomInput
           onChangeText={setUsername}
-          value={username}
+          value={username.trim()}
           placeholder={'Username'}
           isPassword={false}
         />
 
         <CustomInput
           onChangeText={setPassword}
-          value={password}
+          value={password.trim()}
           placeholder={'Password'}
           isPassword={true}
         />
+        <Text style={styles.errorText}>
+          {showError ? 'Username/password do not exist' : ''}{' '}
+        </Text>
 
         <View style={styles.spacer}></View>
 
@@ -130,5 +142,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_400Regular',
     fontSize: 14,
     color: 'white'
+  },
+  errorText: {
+    fontFamily: 'Nunito_400Regular',
+    fontSize: 14,
+    color: '#DD6B55'
   }
 })
